@@ -74,8 +74,7 @@ async def request_to_llm(message: Message):
 
 
     await message.reply(
-        text=response.text,
-        parse_mode=ParseMode.MARKDOWN_V2
+        text=response.text
     )
 
 
