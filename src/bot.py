@@ -50,7 +50,7 @@ async def send_help(message: Message):
 BOT_USERNAME = 'MLCourseAssistantBot'
 
 #@dp.message()
-@dp.message_handler(lambda message: message.text and f"@{BOT_USERNAME}" in message.text)
+@dp.message(lambda message: message.text and f"@{BOT_USERNAME}" in message.text)
 async def request_to_llm(message: Message):
     user_request = message.text
 
