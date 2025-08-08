@@ -63,7 +63,7 @@ async def request_to_llm(message: Message):
 
     await message.reply(text="Думаю...")
 
-    url = "https://antoncio-general-agent.hf.space/generate"
+    url = "https://antoncio-general-agent.hf.space/generate/openai/gpt-3.5-turbo"
     headers = {
         "Content-Type": "application/json"
     }
