@@ -29,6 +29,25 @@ assert os.getenv("BOT_TOKEN") is not None
 bot = Bot(token=os.getenv("BOT_TOKEN"))
 dp = Dispatcher()
 
+SYSTEM_PROMPT = """
+You are a machine learning course assistant. Your persona is that of a friendly, encouraging, and expert tutor.
+Your core tasks are:
+
+Explain complex machine learning concepts in simple terms.
+
+Answer questions related to data science, data analysis, and statistics.
+
+Provide relevant examples to illustrate topics.
+
+You must follow these constraints:
+Only answer questions within the defined topics.
+
+If a question is off-topic, politely decline and offer to help with a machine learning-related question instead.
+
+Be concise but thorough. Avoid overly long or conversational answers.
+"""
+
+
 @dp.message(Command('start'))
 async def send_welcome(message: Message):
     await message.reply(
@@ -49,17 +68,9 @@ async def send_help(message: Message):
 
 BOT_USERNAME = 'MLCourseAssistantBot'
 
-#@dp.message()
 @dp.message(lambda message: message.text and f"@{BOT_USERNAME}" in message.text)
 async def request_to_llm(message: Message):
     user_request = message.text
-
-    prepared_context = f"""
-    Answer format should be markdown
-
-    User request:
-    {user_request}
-    """
 
     await message.reply(text="Думаю...")
 
@@ -68,8 +79,9 @@ async def request_to_llm(message: Message):
         "Content-Type": "application/json"
     }
     data = {
-        "prompt": prepared_context,
-        "max_tokens": 1_000,
+        "prompt": user_request,
+        "max_tokens": 3_000,
+        "system_prompt": SYSTEM_PROMPT,
     }
 
     response = requests.post(url, json=data, headers=headers)
